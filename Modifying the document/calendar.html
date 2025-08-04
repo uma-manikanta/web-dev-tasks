@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* * {
+            box-sizing: border-box;
+        } */
+        table {
+            width: 500px;
+            margin: 20px;
+            border-radius: 12px;
+            /* border: solid 1px black; */
+            background: whitesmoke;
+            box-shadow: 0px 0px 10px rgba(182, 182, 182, 0.829) ;
+        }
+        th, td {
+            font-family:Arial, Helvetica, sans-serif;
+            font-size: 1.2em;
+            /* margin; */
+            text-align: center;
+            margin: 0;
+            padding: 10px 0;
+            border-radius: 12px;
+            height: 40px;
+            width: 40px;
+            transition: background-color 0.5s;
+            /* box-sizing: border-box; */
+            
+        }
+    </style>
+    
+</head>
+<body>
+    <label for="year">Year:</label><input type="number" value="2025" id="year" ><br>
+    <label for="month">Month</label>
+    <select name="month" id="month">
+        <option value="0">Jan</option>
+        <option value="1">Feb</option>
+        <option value="2">Mar</option>
+        <option value="3">APr</option>
+        <option value="4">May</option>
+        <option value="5">June</option>
+        <option value="6">July</option>
+        <option value="7" selected>Aug</option>
+        <option value="8">Sep</option>
+        <option value="9">Oct</option>
+        <option value="10">Nov</option>
+        <option value="11">Dec</option>
+    </select>
+    <button id="btn">Get Calendar</button>
+    <div id="container"></div>
+    <script>
+        btn.addEventListener('click',getCalendar);
+        // console.log(`${typeof month}:${month}`);
+        function getCalendar() {
+            /*
+                d = Date Object
+                days = days names in a week
+                dayNUmber = dayIndex in a week i.e, 0 => Mon , 6 => Sun
+                day = date between 1 - 30/31 in a month
+            */
+            let year = parseInt(document.getElementById('year').value);
+            let month = parseInt(document.getElementById('month').value);
+            let d = new Date(year ?? 2025,month ?? 8);
+
+            let table = document.createElement('table');
+            table.setAttribute('id','calendar');
+
+            //header row
+            let tr = document.createElement('tr');
+            let days = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+
+            for (let day of days) {
+                let th = document.createElement('th');
+                th.textContent = day;
+                tr.append(th);
+            }
+            table.append(tr);
+
+
+            tr = document.createElement('tr');
+            // to append empty cells at the beginning
+            let dayNumber = getDayNumber(d);
+            for (let i = 0; i < dayNumber;++i) {
+                let td = document.createElement('td');
+                tr.append(td);
+            }
+            //to create rest of the calendar
+            while (d.getMonth() != month + 1) {
+                let day = d.getDate();
+                let dayNumber = getDayNumber(d);
+                let td = document.createElement('td');
+                td.textContent = day;
+                tr.append(td)
+                if (dayNumber == 6) {
+                    table.append(tr);
+                    tr = document.createElement('tr');
+                }
+                d.setDate(d.getDate()+1);
+            }
+            var isIncomplete = false;
+            while (getDayNumber(d) != 0) {
+                isIncomplete = true;
+                let td = document.createElement('td');
+                tr.append(td);
+                d.setDate(d.getDate()+1);
+            }
+            if (isIncomplete) {
+                table.append(tr);
+            }
+
+            container.innerHTML = table.outerHTML;
+        }
+
+        function getDayNumber(d) {
+            res = d.getDay()
+            if (res == 0) {
+                return 6;
+            }
+            else {
+                return res - 1;
+            }
+        }
+        getCalendar();
+    </script>
+    <script>
+        let calendar = document.getElementById('container');
+        calendar.addEventListener('mouseover',function(event) {
+            let elem = event.target;
+            elem = elem.closest('td') ?? elem.closest('th');
+            if (!elem) {
+                return
+            }
+            if (elem.textContent == "") {
+                return;
+            }
+            else {
+                elem.style.cursor = "pointer"
+                elem.style.background = "#BD2E95";
+                elem.style.color = "white";
+            }
+        });
+        calendar.addEventListener('mouseout', function(event) {
+            let elem = event.target;
+            elem = elem.closest('td') ?? elem.closest('th');
+            if (!elem) {
+                return;
+            }
+            elem.style.cursor = "default"
+            elem.style.background = "";
+            elem.style.color = "black"
+        })
+    </script>
+</body>
+</html>
