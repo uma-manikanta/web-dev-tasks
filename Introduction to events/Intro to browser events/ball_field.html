@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #field {
+            width: 200px;
+            height:150px;
+            position: relative;
+            background: #00FF00;
+            border: solid 10px black;
+            letter-spacing: 5px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        #ball {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            transition: all 0.1s ease-in;
+            background: radial-gradient(circle at center,black 20% ,black 20%, white 20%, white 100%);
+        }
+    </style>
+</head>
+<body>
+    <div id="field">
+        <div id="ball"></div>
+        ......................
+        ......................
+        ......................
+        ......................
+        ......................
+        ......................
+        ......................
+        ......................
+    </div>
+    <script>
+        field.addEventListener('mousemove',function(event) {
+            let fieldCoords = this.getBoundingClientRect();
+
+            let ballCoords = {
+                left: event.clientX - fieldCoords.left 
+                    - field.clientLeft - ball.offsetWidth/2,
+                top: event.clientY - fieldCoords.top 
+                    - field.clientTop - ball.offsetHeight/2
+            }
+
+            if (ballCoords.left < 0) ballCoords.left = 0;
+            if (ballCoords.top < 0) ballCoords.top = 0;
+
+            if ((ballCoords.left + ball.offsetWidth) > 
+            field.clientWidth) {
+                ballCoords.left = field.clientWidth - ball.offsetWidth;
+            }
+            if ((ballCoords.top + ball.offsetHeight) > 
+            field.clientHeight) {
+                ballCoords.top = field.clientHeight - ball.offsetHeight;
+            }
+
+            ball.style.left = ballCoords.left + 'px';
+            ball.style.top = ballCoords.top + 'px';
+
+        });
+    </script>
+</body>
+</html> 
