@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body {
+            height: 200vh;
+            width: 100vw;
+            background: url('img.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        #notification {
+            font-family:Arial, Helvetica, sans-serif;
+            top: 10px;
+            right: 10px;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.5);
+
+            backdrop-filter: blur(15px);
+            /* filter: drop-shadow(0px 0px 10px rgb(234, 236, 236)); */
+            position: fixed;
+            height: 100px;
+            width: 276px;
+            /* border: solid 1px red; */
+
+            display: flex;
+            flex-direction: column;
+            transition: all 1s ease-in;
+        }
+        .desc {
+            padding: 0px 8px;
+            justify-content: center;
+            /* align-items: center; */
+            flex-direction: column;
+            display: flex;
+            flex: 2 0 ;
+            border-bottom: solid 1px grey;
+        }
+        .desc span:first-child {
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        .desc span:last-child {
+            font-size: 0.8em;
+            font-weight: 100;
+        }
+        .actions {
+            display: flex;
+            flex: 1 0;
+            /* border: solid 1px green; */
+        }
+        .actions button {
+            flex: 1 0;
+            background: none;
+            cursor: pointer;
+        }
+        .btn-cancel {
+            border: none;
+            border-right: solid 1px grey;
+            color: darkred;
+        }
+        .btn-primary {
+            border: none;
+            /* border-left: solid 1px grey; */
+            color: rgb(28, 25, 230)
+        }
+        .btn-close {
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <!-- <div id="notification">
+        <button class="btn btn-close">🗙</button>
+        <div class="desc">
+            <span>Follow Request</span>
+            <span>Navya Sri Dulla (navya_sri) has requested you to follow</span>
+        </div>
+        <div class="actions">
+            <button class="btn-cancel">Reject</button>
+            <button class="btn-primary">Accept</button>
+        </div>
+    </div> -->
+
+
+    <div id="form">
+        <input id="title" type="text" value="Follow Request"
+         placeholder="title"><br>
+        <textarea rows = "10" cols="50" name="text" 
+        id="message" placeholder="message">Navya Sri Dulla (navya_sri) has requested you to follow</textarea>
+        <br>
+        <button id="show-btn">Show notification</button>
+    </div>
+   
+    <script>
+        function showNotification(title,message) {
+            if (document.getElementById('notification')) {
+                return;
+            }
+            let notification = `<div id="notification">
+                <button class="btn-close">🗙</button>
+                <div class="desc">
+                    <span>${title}</span>
+                    <span>${message}</span>
+                </div>
+                <div class="actions">
+                    <button class="btn-cancel">Reject</button>
+                    <button class="btn-primary">Accept</button>
+                </div>
+            </div>`
+            document.body.insertAdjacentHTML('afterbegin',notification);
+            close_btn = document.getElementById('notification').querySelector('.btn-close');
+            close_btn.addEventListener('click',function() {
+                close_btn.parentElement.remove();
+            });
+        }
+        let show_btn = document.getElementById('show-btn');
+        show_btn.addEventListener('click',function() {
+            showNotification(title.value,message.value);
+        });
+    </script>
+</body>
+</html>
