@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .carousel {
+            display: flex;
+            width: 450px;
+            /* border: solid 1px blue; */
+        }
+        .arrow {
+            width: 30px;
+        }
+        .arrow.left {
+            border-radius: 20px 0 0 20px;
+        }
+        .arrow.right {
+            border-radius:  0 20px 20px 0;
+        }
+        .gallery {
+            overflow: hidden;
+            flex: 0 0 390px;
+            height: 130px;
+            width: 390px;
+            border: solid 1px;
+            /* overflow: hidden; */
+        }
+        #ribbon {
+            overflow: hidden;
+            list-style-type: none;
+            margin: 0px;
+            padding: 0;
+            display: flex;
+            transition: all 1s;
+            margin-left: 0px;
+        }
+    </style>
+</head>
+<body>
+    <div class="carousel" id="carousel">
+        <button class="arrow left" id="btn-left"> ← </button>
+        <div class="gallery" id="gallery" data-total = "10" data-count = "3">
+            <ul id="ribbon">
+                <li><img src="1.png" alt=""></li>
+                <li><img src="2.png" alt=""></li>
+                <li><img src="3.png" alt=""></li>
+                <li><img src="4.png" alt=""></li>
+                <li><img src="5.png" alt=""></li>
+                <li><img src="6.png" alt=""></li>
+                <li><img src="7.png" alt=""></li>
+                <li><img src="8.png" alt=""></li>
+                <li><img src="9.png" alt=""></li>
+                <li><img src="10.png" alt=""></li>
+            </ul>
+        </div>
+        <button class="arrow right" id="btn-right"> → </button>
+    </div>
+    <script>
+        let left_btn = document.getElementById('btn-left');
+        let right_btn = document.getElementById('btn-right');
+        let gallery = document.getElementById('gallery');
+        let ribbon = document.getElementById('ribbon');
+
+        right_btn.addEventListener('click', function(event) {
+            let shown = parseInt(gallery.dataset.count);
+            let total = parseInt(gallery.dataset.total);
+            if (shown == total) {
+                return;
+            }
+            let st = getComputedStyle(ribbon);
+            let skip = 0;
+            if (total-shown >= 3) {
+                gallery.dataset.count = shown + 3;
+                skip = 3;
+            }
+            else {
+                gallery.dataset.count = total;
+                skip = total-shown;
+            }
+            let n = st.marginLeft.length;
+            let m = Number(st.marginLeft.slice(0,n-2));
+            // let leftSide = gallery.dataset.count - 3;
+            ribbon.style.marginLeft = m - (skip*130)+ 'px';
+        });
+
+        left_btn.addEventListener('click', function(event) {
+            let shown = parseInt(gallery.dataset.count);
+            let total = parseInt(gallery.dataset.total);
+            if (shown == 3) {
+                return;
+            }
+            let st = getComputedStyle(ribbon);
+            let skip = 0;
+            if (shown-3 > 3) {
+                gallery.dataset.count = shown - 3;
+                skip = 3;
+            }
+            else {
+                gallery.dataset.count = 3;
+                skip = shown - 3;
+            }
+
+            let n = st.marginLeft.length;
+            let m = Number(st.marginLeft.slice(0,n-2));
+            // set
+            ribbon.style.marginLeft = m + (skip*130)+ 'px';
+        });
+    </script>
+</body>
+</html>
